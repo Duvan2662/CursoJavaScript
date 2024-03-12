@@ -14,8 +14,11 @@ const especiales = ['A','J','Q','K']; //Tipos de carta
 
 //Referencias del DOM
 const btnpedir = document.querySelector('#btnPedir');
-
 const actualizarPuntos = document.querySelectorAll('small');
+const barajaJugador = document.querySelector('#jugador-cartas');
+
+
+
 
 //Esta funcion crea una nueva baraja 
 const crearBaraja = () =>{
@@ -114,8 +117,22 @@ btnpedir.addEventListener('click', () => {
 
     const carta = tomarCarta();//Cuando se de click se toma una carta
     puntosJugador = puntosJugador + valorCarta2(carta); //Se actualiza los puntos del jugador 
-    actualizarPuntos[0].innerText = puntosJugador;//Se toma el small en su posicion 0 que es el small del jugador y se coloca el puntaje del jugador  
-    console.log(puntosJugador);
+    actualizarPuntos[0].innerText = puntosJugador;//Se toma el small en su posicion 0 que es el small del jugador y se coloca el puntaje del jugador 
+
+    //Logica para la creacion de la imagen en el HTML 
+    const imagenCarta = document.createElement('img');//Crea un elemento img de HTML
+    imagenCarta.classList.add('carta');//Se le asgina la clase de las cartas
+    imagenCarta.src = `assets/cartas/${carta}.png`;//Se le asigna la imagen 
+    barajaJugador.append(imagenCarta);//Se coloca al final del elemento
+
+
+    if(puntosJugador>21){
+        console.error('PERDISTE');
+        btnpedir.disabled = true;
+    }else if(puntosJugador === 21){
+        console.warn('LLEGASTE A 21 GENIAL !!!!!!1');
+        btnpedir.disabled = true;
+    }
     
 })
 
