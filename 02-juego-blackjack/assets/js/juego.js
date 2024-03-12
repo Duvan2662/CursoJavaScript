@@ -6,9 +6,16 @@
 */
 
 let baraja       = [];
+let puntosJugador = 0;
+let puntosComputadora = 0 ;
+
 const tipos      = ['C','D','H','S']; //Tipos de carta
 const especiales = ['A','J','Q','K']; //Tipos de carta
 
+//Referencias del DOM
+const btnpedir = document.querySelector('#btnPedir');
+
+const actualizarPuntos = document.querySelectorAll('small');
 
 //Esta funcion crea una nueva baraja 
 const crearBaraja = () =>{
@@ -27,6 +34,7 @@ const crearBaraja = () =>{
     }
 
 
+    // console.log(baraja)//Arreglo sin barajar
     baraja = _.shuffle (baraja); //Funcion que sirve para barajar apartir de la libreria Underscore.js
     console.log(baraja);//Arreglo barajado
     return baraja;
@@ -43,9 +51,10 @@ const tomarCarta = () =>{
         throw 'No ahi cartas en la baraja'
     }
 
+
     const carta = baraja.pop();//Elimina el ultimo elemento de un array 
-    console.log(baraja);
-    console.log(carta);
+    // console.log(baraja);
+    // console.log(carta);
     return carta;//retorna la carta  
 };
 
@@ -96,7 +105,19 @@ const valorCarta2 = (carta) =>{
                               //cambio el valor de tipo string a entero 
 }
 
-let valor = valorCarta2(tomarCarta())
-console.log({valor});
+
+
+
+
+//Eventos
+btnpedir.addEventListener('click', () => {
+
+    const carta = tomarCarta();//Cuando se de click se toma una carta
+    puntosJugador = puntosJugador + valorCarta2(carta); //Se actualiza los puntos del jugador 
+    actualizarPuntos[0].innerText = puntosJugador;//Se toma el small en su posicion 0 que es el small del jugador y se coloca el puntaje del jugador  
+    console.log(puntosJugador);
+    
+})
+
 
 
