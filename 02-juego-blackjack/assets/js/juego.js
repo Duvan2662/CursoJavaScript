@@ -5,18 +5,19 @@
 * 2S = DOS DE ESPADAS 
 */
 
-let baraja       = [];
-let puntosJugador = 0;
+let baraja            = [];
+let puntosJugador     = 0;
 let puntosComputadora = 0 ;
 
 const tipos      = ['C','D','H','S']; //Tipos de carta
 const especiales = ['A','J','Q','K']; //Tipos de carta
 
 //Referencias del DOM
-const btnpedir = document.querySelector('#btnPedir');
-const actualizarPuntos = document.querySelectorAll('small');
-const barajaJugador = document.querySelector('#jugador-cartas');
-
+const btnpedir          = document.querySelector('#btnPedir');
+const btndetener          = document.querySelector('#btnDetener');
+const actualizarPuntos  = document.querySelectorAll('small');
+const barajaJugador     = document.querySelector('#jugador-cartas');
+const barajaComputadora = document.querySelector('#computadora-cartas');
 
 
 
@@ -104,8 +105,31 @@ const valorCarta2 = (carta) =>{
     
     return (isNaN(valor))?//Entra si NO es un numero el valor 
            (valor =='A')? 11:10//Si el valor es igual a A devuelve 11 si no devuelve 10
-           :parseInt(valor,10)//Entra si ES un numero el valor
+           :parseInt(valor,10);//Entra si ES un numero el valor
                               //cambio el valor de tipo string a entero 
+}
+
+
+
+//Turno de la computadora 
+
+const turnoComputadora = (puntosMinimos)=>{
+    do {
+        const carta = tomarCarta();//Cuando se de click se toma una carta
+
+        puntosComputadora = puntosComputadora + valorCarta2(carta); //Se actualiza los puntos de la computadora 
+        actualizarPuntos[1].innerText = puntosComputadora;//Se toma el small en su posicion 1 que es el small de la computadora  y se coloca el puntaje de la computadora 
+        //Logica para la creacion de la imagen en el HTML 
+        const imagenCarta = document.createElement('img');//Crea un elemento img de HTML
+        imagenCarta.classList.add('carta');//Se le asgina la clase de las cartas
+        imagenCarta.src = `assets/cartas/${carta}.png`;//Se le asigna la imagen 
+        barajaComputadora.append(imagenCarta);//Se coloca al final del elemento
+        
+        if(puntosMinimos > 21){//Si lo puntos del jugador son mayor a 21 entonces la computadora gana con cualquier carta 
+            break; //Se sale del ciclo 
+        }
+    } while ((puntosComputadora < puntosMinimos) && (puntosMinimos<=21));//tiene que ser menor a los puntos del jugador Y (&&) puntos debe ser menor o igual a 21  
+
 }
 
 
@@ -113,12 +137,13 @@ const valorCarta2 = (carta) =>{
 
 
 //Eventos
+//Evento de pedir
 btnpedir.addEventListener('click', () => {
 
     const carta = tomarCarta();//Cuando se de click se toma una carta
+
     puntosJugador = puntosJugador + valorCarta2(carta); //Se actualiza los puntos del jugador 
     actualizarPuntos[0].innerText = puntosJugador;//Se toma el small en su posicion 0 que es el small del jugador y se coloca el puntaje del jugador 
-
     //Logica para la creacion de la imagen en el HTML 
     const imagenCarta = document.createElement('img');//Crea un elemento img de HTML
     imagenCarta.classList.add('carta');//Se le asgina la clase de las cartas
@@ -126,15 +151,30 @@ btnpedir.addEventListener('click', () => {
     barajaJugador.append(imagenCarta);//Se coloca al final del elemento
 
 
-    if(puntosJugador>21){
+    if(puntosJugador > 21){
         console.error('PERDISTE');
-        btnpedir.disabled = true;
+        btnpedir.disabled = true;//bloque el boton pedir
+        btndetener.disabled = true;//bloque el boton detener
+        turnoComputadora(puntosJugador);//Funcion para que juege la computadora 
     }else if(puntosJugador === 21){
         console.warn('LLEGASTE A 21 GENIAL !!!!!!1');
-        btnpedir.disabled = true;
+        btnpedir.disabled = true;//bloque el boton pedir
+        btndetener.disabled = true;//bloque el boton detener
+        turnoComputadora(puntosJugador);//Funcion para que juege la computadora 
     }
     
 })
+
+
+
+//Evento de detener
+btndetener.addEventListener('click', ()=> {
+    btnpedir.disabled = true;//bloque el boton pedir
+    btndetener.disabled = true;//bloque el boton detener
+    turnoComputadora (puntosJugador);//Funcion para que juege la computadora 
+})
+
+
 
 
 
