@@ -1,4 +1,3 @@
-
 class Persona {
 
 
@@ -66,33 +65,27 @@ class Persona {
 }
 
 
+class Heroe extends Persona { 
+    
+    //propiedades
+    clan = 'Sin clan';
+
+    //Constructor
+    constructor(nombre,codigo,frase,clan){
+        super(nombre,codigo,frase);//Constructo de la clase que extiende en este caso persona
+
+        //Asignaciones siempre despues del SUPER
+        this.clan = clan
+    }
+
+    //Metodos
+    quienSoy(){
+        console.log(`soy ${this.nombre} y pertenzco a ${this.clan}`)
+        super.quienSoy();//Si lo necesito lo puedo llamar desde aca
+    }
+}
 //Instanciar
-const spiderman = new Persona('Peter parcket', 'Spidermann', 'Soy spiderman');
-const ironMan = new Persona('Tony starck', 'Ironman', 'Soy Iroman');
 
-
-console.log(ironMan);
-
-
-spiderman.quienSoy();
-ironMan.quienSoy();
-spiderman.miFrase();
-ironMan.miFrase();
-
-spiderman.dosOMasMetodos();
-
-spiderman.setcomidaFavorita = 'Pollito con papa';
-
+const spiderman = new Heroe('Peter parcket', 'Spidermann', 'Soy spiderman','Avengers');
 console.log(spiderman);
-console.log(spiderman.getcomidaFavorita);
-
-
-console.log(Persona.conteo);
-console.log(Persona.getConteo);
-Persona.mensaje();
-
-
-
-
-
-
+spiderman.quienSoy();
