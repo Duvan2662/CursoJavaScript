@@ -46,7 +46,12 @@ const addTodo = (descripccion) => {
 }
 
 const toogleTodo = (todoId)=> {
-    throw new Error ('No esta implementado');
+    state.todos = state.todos.map(todo => {
+        if(todo.id === todoId){
+            todo.estado = ! todo.estado //Cambia el estado si es true pasa a false, si es false pasa a true 
+        }
+        return todo;
+    })
 
 }
 
