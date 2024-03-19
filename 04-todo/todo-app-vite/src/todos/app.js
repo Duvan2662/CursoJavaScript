@@ -48,11 +48,20 @@ export const App = (elementId) => {
 
    })
 
-   
+
    listaNotas.addEventListener('click', (evento) =>{
     const elemento = evento.target.closest('[data-id]'); //al darle click Busca el elemento mas cercano que tenga el atributo "data-id"
     todoStore.toogleTodo(elemento.getAttribute(`data-id`))//elemento.getAttribute accede al id de la nota y este se pasa al cambio de estado
     displayTodos();  
+   })
+
+   listaNotas.addEventListener('click', (evento) =>{       
+        if(evento.target.className === 'destroy'){
+            const elemento = evento.target.closest('[data-id]'); //al darle click Busca el elemento mas cercano que tenga el atributo "data-id"
+            todoStore.deleteTodo(elemento.getAttribute(`data-id`))//elemento.getAttribute accede al id de la nota y este se pasa al cambio de estado
+         displayTodos();
+        }
+        return;    
    })
 
 }
