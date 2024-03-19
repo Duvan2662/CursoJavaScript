@@ -1,5 +1,6 @@
 import { Todo } from "../models/todo.models";
 import { createTodoHtml } from "../use-cases/index";
+let  element;
 /**
  * 
  * @param {string} elementId 
@@ -9,9 +10,19 @@ import { createTodoHtml } from "../use-cases/index";
 export const renderTodos = (elementId, todos = []) => {
     
     //TODO referencia
-    const element = document.querySelector(elementId);
+
+    if(!element){
+        element = document.querySelector(elementId);
+    }
+    if(!element){
+        throw new Error (`Elemento no encontrado ${elementId}`)
+    }
+
+    element.innerHTML = '';
+
     todos.forEach(todo => {
         element.append(createTodoHtml(todo))
         
     });
+
 }
