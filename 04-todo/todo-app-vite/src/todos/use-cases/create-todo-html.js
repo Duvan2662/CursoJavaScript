@@ -20,8 +20,7 @@ export const createTodoHtml = (todo) => {
     }
 
     const html = `
-
-        <div class="view">s
+        <div class="view">
             <input class="toggle" type="checkbox" ${checar}>
             <label>${descripccion}</label>
             <button class="destroy"></button>
