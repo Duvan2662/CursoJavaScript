@@ -30,11 +30,12 @@ export const App = (elementId) => {
 
 
     //Refercias al DOM 
-
    const newDescriptionImput = document.querySelector(ElementIDs.NewTodoImput);
+   const listaNotas = document.querySelector(ElementIDs.TodoList);
+
+
 
    newDescriptionImput.addEventListener('keyup', (evento) => { //Escucha cada ve que se oprime una tecla 
-
     if(evento.keyCode !== 13){//Verifica si el usuario ha presiona la tecla enter y se detiene si es asi
         return
     }
@@ -45,6 +46,13 @@ export const App = (elementId) => {
     displayTodos();
     evento.target.value = ''
 
+   })
+
+   
+   listaNotas.addEventListener('click', (evento) =>{
+    const elemento = evento.target.closest('[data-id]'); //al darle click Busca el elemento mas cercano que tenga el atributo "data-id"
+    todoStore.toogleTodo(elemento.getAttribute(`data-id`))//elemento.getAttribute accede al id de la nota y este se pasa al cambio de estado
+    displayTodos();  
    })
 
 }
