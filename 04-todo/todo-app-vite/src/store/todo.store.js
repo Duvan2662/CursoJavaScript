@@ -19,13 +19,22 @@ const state = {
 }
 
 const initStore = () => {
-    console.log('InitStore');
+    loadStore();
     console.log(state);
 }
 
 const loadStore = () =>{
-    throw new Error ('No esta implementado');
+    if(!localStorage.getItem('state')){// SI el local storage esta vacio
+        return;
+    }
+     const {todos = [],filter = Filters.All} = JSON.parse(localStorage.getItem('state'))//Destructuracion de objetos y parsea el Json para volver el state a su estado original (Objeto) 
+     state.todos = todos;//Le asigna el valor al state de notas 
+     state.filter = filter;//Le asigna el valor al filtro de las notas 
 }
+
+const saveStateLocalStorage = () => {
+    localStorage.setItem('state',JSON.stringify(state));//Agrega al localstorage de la aplicacion es el state de notas convertido en un json de string (Estos dos valores siempre tienen que ser string)
+} 
 
 const getTodo = (filter = Filters.All) => {
     switch (filter) {
@@ -38,6 +47,7 @@ const getTodo = (filter = Filters.All) => {
         default:
             throw new Error (`Opcion: ${filter} no permitida`);
     }
+    saveStateLocalStorage();
 }
 
 const addTodo = (descripccion) => {
@@ -45,6 +55,7 @@ const addTodo = (descripccion) => {
         throw new Error (`Se requiere que de una descripccion`);
     }
     state.todos.push(new Todo(descripccion));
+    saveStateLocalStorage();
 }
 
 const toogleTodo = (todoId)=> {
@@ -54,20 +65,23 @@ const toogleTodo = (todoId)=> {
         }
         return todo;
     })
-
+    saveStateLocalStorage();
 }
 
 const deleteTodo = (todoId)=> {
     state.todos = state.todos.filter(todo => todo.id !== todoId);
+    saveStateLocalStorage();
 }
 
 
 const deleteCompleted = ()=> {
     state.todos = state.todos.filter(todo => todo.done);
+    saveStateLocalStorage();
 }
 
 const setFilter = (newFilter = Filters.All) => {
     state.filter = newFilter;
+    saveStateLocalStorage();
 }
 
 const getCurrentFilter = () => {
