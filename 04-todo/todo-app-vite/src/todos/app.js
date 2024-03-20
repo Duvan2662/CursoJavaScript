@@ -1,12 +1,13 @@
 import html from "../todos/app.html?raw";
-import todoStore from '../store/todo.store';
+import todoStore, { Filters } from '../store/todo.store';
 import { renderTodos } from "../todos/use-cases/index";
 
 //Nombres de los elementos HTML
 const ElementIDs = {
     CleanerCompleted : '.clear-completed',
     TodoList : `.todo-list`,
-    NewTodoImput : `#new-todo-input`
+    NewTodoImput : `#new-todo-input`,
+    TodoFiltro : `.filtro`
 }
 
 /**
@@ -34,6 +35,7 @@ export const App = (elementId) => {
    const newDescriptionImput = document.querySelector(ElementIDs.NewTodoImput);
    const listaNotas = document.querySelector(ElementIDs.TodoList);
    const limpiarTodos = document.querySelector(ElementIDs.CleanerCompleted);
+   const filtrosSeleccionado = document.querySelectorAll(ElementIDs.TodoFiltro);
 
 
 
@@ -48,32 +50,60 @@ export const App = (elementId) => {
     displayTodos();
     evento.target.value = ''
 
-   })
+   });
 
 
-   listaNotas.addEventListener('click', (evento) =>{
-    const elemento = evento.target.closest('[data-id]'); //al darle click Busca el elemento mas cercano que tenga el atributo "data-id"
-    todoStore.toogleTodo(elemento.getAttribute(`data-id`))//elemento.getAttribute accede al id de la nota y este se pasa al cambio de estado
-    displayTodos();  
-   })
+    listaNotas.addEventListener('click', (evento) =>{
+        const elemento = evento.target.closest('[data-id]'); //al darle click Busca el elemento mas cercano que tenga el atributo "data-id"
+        todoStore.toogleTodo(elemento.getAttribute(`data-id`))//elemento.getAttribute accede al id de la nota y este se pasa al cambio de estado
+        displayTodos();  
+    });
 
-   listaNotas.addEventListener('click', (evento) =>{       
+    listaNotas.addEventListener('click', (evento) =>{       
         if(evento.target.className === 'destroy'){
             const elemento = evento.target.closest('[data-id]'); //al darle click Busca el elemento mas cercano que tenga el atributo "data-id"
             todoStore.deleteTodo(elemento.getAttribute(`data-id`))//elemento.getAttribute accede al id de la nota y este se pasa al cambio de estado
             displayTodos();
         }
         return;    
-   })
+   });
 
-   limpiarTodos.addEventListener('click',(evento)=>{
-     
-    if(evento.target.className === 'clear-completed'){
-        todoStore.deleteCompleted();
-        displayTodos();
-    }
-    return
-    
-   })
+    limpiarTodos.addEventListener('click',(evento)=>{
+        if(evento.target.className === 'clear-completed'){
+            todoStore.deleteCompleted();
+            displayTodos();
+        }
+        return
+   });
+
+
+
+
+    filtrosSeleccionado.forEach(elemento => {
+        elemento.addEventListener('click', (evento)=>{
+        
+            filtrosSeleccionado.forEach(elm =>{
+                elm.classList.remove('selected');
+            });
+
+            evento.target.classList.add('selected');
+
+            switch (evento.target.text) {
+                case 'Todos':
+                    todoStore.setFilter(Filters.All);
+                    break;
+                case 'Pendientes':
+                    todoStore.setFilter(Filters.Pending);
+                    break;    
+                case 'Completados':
+                    todoStore.setFilter(Filters.Completed);
+                    break;    
+            }
+
+            displayTodos();
+        })
+    })
+
+
 
 }
