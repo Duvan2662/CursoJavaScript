@@ -27,9 +27,9 @@ const loadStore = () =>{
     if(!localStorage.getItem('state')){// SI el local storage esta vacio
         return;
     }
-     const {todos = [],filter = Filters.All} = JSON.parse(localStorage.getItem('state'))//Destructuracion de objetos y parsea el Json para volver el state a su estado original (Objeto) 
-     state.todos = todos;//Le asigna el valor al state de notas 
-     state.filter = filter;//Le asigna el valor al filtro de las notas 
+    const {todos = [],filter = Filters.All} = JSON.parse(localStorage.getItem('state'))//Destructuracion de objetos y parsea el Json para volver el state a su estado original (Objeto) 
+    state.todos = todos;//Le asigna el valor al state de notas 
+    state.filter = filter;//Le asigna el valor al filtro de las notas 
 }
 
 const saveStateLocalStorage = () => {
@@ -75,7 +75,7 @@ const deleteTodo = (todoId)=> {
 
 
 const deleteCompleted = ()=> {
-    state.todos = state.todos.filter(todo => todo.done);
+    state.todos = state.todos.filter(todo => !todo.estado);
     saveStateLocalStorage();
 }
 
