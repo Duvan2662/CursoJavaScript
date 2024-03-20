@@ -1,13 +1,14 @@
 import html from "../todos/app.html?raw";
 import todoStore, { Filters } from '../store/todo.store';
-import { renderTodos } from "../todos/use-cases/index";
+import { renderTodos, renderPending } from "../todos/use-cases/index";
 
 //Nombres de los elementos HTML
 const ElementIDs = {
     CleanerCompleted : '.clear-completed',
     TodoList : `.todo-list`,
     NewTodoImput : `#new-todo-input`,
-    TodoFiltro : `.filtro`
+    TodoFiltro : `.filtro`,
+    PendingCountLable : `#pending-count`
 }
 
 /**
@@ -19,6 +20,11 @@ export const App = (elementId) => {
     const displayTodos = () => {
         const todos = todoStore.getTodo(todoStore.getCurrentFilter());
         renderTodos(ElementIDs.TodoList,todos)
+        updatePendingCount();
+    }
+
+    const updatePendingCount = () =>{
+        renderPending(ElementIDs.PendingCountLable);
     }
 
     (() => {
